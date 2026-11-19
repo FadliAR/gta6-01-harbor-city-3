@@ -450,6 +450,11 @@ class Game {
     if (this.player.inCar) {
       const speedNorm = this.player.inCar.update(dt, input, this.world.colliders, (s) => this._onCrash(s));
       this.audio.setEngine(speedNorm, true);
+      // Keep the player's own position on the car: missions, pickups, the
+      // minimap and the police all read player.pos.
+      this.player.pos.copy(this.player.inCar.pos);
+      this.player.angle = this.player.inCar.angle;
+      this.player.speed = this.player.inCar.speed;
       // Cruisers ramming the player.
       for (const cruiser of this.police.cruisers) {
         if (distance2D(cruiser.pos.x, cruiser.pos.z, this.player.pos.x, this.player.pos.z) < 3.4) {
