@@ -72,7 +72,9 @@ export class PedestrianSystem {
   }
 
   update(dt, player, wanted) {
-    const rng = Math.random;
+    // A fresh seeded stream per frame is wasteful; one throwaway stream is
+    // enough for target picks (city layout itself uses the fixed seed).
+    const rng = makeRng((Math.random() * 1000000000) | 0);
     for (const ped of this.peds) {
       if (ped.down) {
         ped.downTime -= dt;
