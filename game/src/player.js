@@ -98,10 +98,12 @@ export class Player {
   }
 
   // Third-person camera: behind and above the player/car, smoothed.
-  updateCamera(dt, camera) {
+  // lookUp lifts the view toward the sky (used when the police helicopter
+  // is hunting the player, so the heli stays in frame).
+  updateCamera(dt, camera, lookUp = 0) {
     const target = this.inCar ? this.inCar : this;
-    const dist = this.inCar ? 11 : 8;
-    const height = this.inCar ? 4.6 : 3.6;
+    const dist = this.inCar ? 12 : 9.5;
+    const height = this.inCar ? 5.2 : 4.2;
     // Camera follows behind the movement heading on foot, behind the car when driving.
     const followAngle = this.inCar ? this.inCar.angle : this.camAngle;
     const desired = new THREE.Vector3(
@@ -110,7 +112,7 @@ export class Player {
       target.pos.z - Math.cos(followAngle) * dist,
     );
     camera.position.lerp(desired, Math.min(1, dt * 5));
-    camera.lookAt(target.pos.x, 1.6, target.pos.z + (this.inCar ? Math.sin(this.inCar.angle) * 2 : 0));
+    camera.lookAt(target.pos.x, 1.6 + lookUp, target.pos.z + (this.inCar ? Math.sin(this.inCar.angle) * 2 : 0));
   }
 
   // On foot the camera eases behind the direction the player walks in,

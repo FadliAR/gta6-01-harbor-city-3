@@ -225,7 +225,13 @@ class Game {
 
   // Stage a screenshot scene: mission / heli / radio / city.
   _applyScene(scene) {
-    if (scene === 'mission') {
+    if (scene === 'city') {
+      // Stand on the north road facing the Spire: street, traffic, towers.
+      this.player.pos.set(-30, 0, 60);
+      this.player.mesh.position.copy(this.player.pos);
+      this.player.camAngle = Math.PI;
+      this.player.angle = Math.PI;
+    } else if (scene === 'mission') {
       this.missions.setIndex(2);
       this.hud.setMission(this.missions.current);
       this.player.pos.set(-20, 0, -90);
@@ -467,7 +473,7 @@ class Game {
       this.audio.setEngine(0, false);
     }
     this.player.updateCameraAngle(dt);
-    this.player.updateCamera(dt, this.camera);
+    this.player.updateCamera(dt, this.camera, this.police.heli ? 7 : 0);
     if (this.shake > 0) {
       this.shake = Math.max(0, this.shake - dt);
       this.camera.position.x += (Math.random() - 0.5) * this.shake;
@@ -478,7 +484,7 @@ class Game {
     const playerSpeed = this.player.inCar ? Math.abs(this.player.inCar.speed) : this.player.speed;
     this.traffic.update(dt, this.player.inCar ? this.player.pos : null);
     this.peds.update(dt, { x: this.player.pos.x, z: this.player.pos.z, speed: playerSpeed }, this.police.wanted);
-    this.police.update(dt, this.player.pos, playerSpeed, !!this.player.inCar);
+    this.police.update(dt, this.player.pos, this.player.angle, playerSpeed, !!this.player.inCar);
     this.audio.setSiren(this.police.wanted > 0);
     const reward = this.missions.update(dt, this.player.pos, !!this.player.inCar, this.police.wanted);
     if (reward) this.hud.setMission(this.missions.current);

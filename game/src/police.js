@@ -68,10 +68,10 @@ function buildHeliMesh() {
   group.add(light);
   group.add(lightTarget);
   const cone = new THREE.Mesh(
-    new THREE.ConeGeometry(7, 34, 16, 1, true),
+    new THREE.ConeGeometry(7, 22, 16, 1, true),
     new THREE.MeshBasicMaterial({ color: 0xfff2b0, transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false }),
   );
-  cone.position.y = -18;
+  cone.position.y = -11.5;
   cone.rotation.x = Math.PI;
   cone.name = 'beam';
   group.add(cone);
@@ -179,7 +179,7 @@ export class PoliceSystem {
     unit.placed = true;
   }
 
-  update(dt, playerPos, playerSpeed, inCar) {
+  update(dt, playerPos, playerAngle, playerSpeed, inCar) {
     // Heat decay when the player is not actively committing crimes.
     if (this.wanted > 0) {
       this.decayTimer -= dt;
@@ -251,17 +251,20 @@ export class PoliceSystem {
       if (bar) bar.material.color.setHex(Math.floor(performance.now() / 300) % 2 === 0 ? 0xff2040 : 0x2040ff);
     }
 
-    // Helicopter: orbits above the player, searchlight pinned on them.
+    // Helicopter: orbits in the hemisphere AHEAD of the player, so it stays
+    // in the camera's view, searchlight pinned on them. Low (22 m) so the
+    // tilted-up camera keeps it in frame.
     if (this.heli) {
-      this.heliAngle += dt * 0.45;
-      const hx = playerPos.x + Math.sin(this.heliAngle) * 26;
-      const hz = playerPos.z + Math.cos(this.heliAngle) * 26;
-      this.heli.position.set(hx, 42, hz);
+      this.heliAngle += dt * 0.35;
+      const baseAngle = playerAngle + Math.sin(this.heliAngle) * 1.0;
+      const hx = playerPos.x + Math.sin(baseAngle) * 18;
+      const hz = playerPos.z + Math.cos(baseAngle) * 18;
+      this.heli.position.set(hx, 22, hz);
       this.heli.rotation.y = Math.atan2(playerPos.x - hx, playerPos.z - hz);
       this.heli.userData.rotor.rotation.y += dt * 28;
       this.heli.userData.tailRotor.rotation.z += dt * 30;
       const target = this.heli.userData.lightTarget;
-      target.position.set(playerPos.x - hx, -42, playerPos.z - hz);
+      target.position.set(playerPos.x - hx, -22, playerPos.z - hz);
       target.updateMatrixWorld();
       // The beam cone follows the same line.
       const beam = this.heli.getObjectByName('beam');
