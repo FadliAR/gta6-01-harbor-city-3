@@ -1,0 +1,46 @@
+/* NEON HARBOR — HUD, screens and menus. Hot-pink neon on a dusk city. */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; overflow: hidden; background: #14101f; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; }
+#game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+.hidden { display: none !important; }
+
+/* --- HUD --- */
+#hud { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+#topLeft { position: absolute; top: 16px; left: 16px; }
+#wanted { font-size: 30px; letter-spacing: 4px; color: #ffd832; text-shadow: 0 0 12px rgba(255, 216, 50, .7); }
+#wanted.hot { color: #ff2a4a; text-shadow: 0 0 14px rgba(255, 42, 74, .9); animation: pulse .7s infinite alternate; }
+@keyframes pulse { from { opacity: 1; } to { opacity: .55; } }
+#cash { font-size: 26px; font-weight: 800; color: #2aff7a; text-shadow: 0 2px 6px rgba(0,0,0,.8); margin-top: 2px; }
+#healthBar { width: 170px; height: 16px; background: rgba(0,0,0,.6); border: 1px solid #888; border-radius: 8px; margin-top: 8px; position: relative; overflow: hidden; }
+#healthFill { height: 100%; width: 100%; background: #2aff7a; }
+#healthText { position: absolute; right: 6px; top: 0; font-size: 11px; line-height: 16px; font-weight: 700; }
+#topRight { position: absolute; top: 16px; right: 16px; text-align: right; }
+#minimap { border: 2px solid #ff2a7a; border-radius: 6px; background: rgba(10,10,24,.85); box-shadow: 0 0 18px rgba(255,42,122,.45); }
+#clock { font-size: 18px; font-weight: 700; margin-top: 4px; text-shadow: 0 2px 4px #000; }
+#speed { font-size: 22px; font-weight: 800; color: #2affd8; text-shadow: 0 2px 4px #000; }
+#missionBox { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); text-align: center; background: rgba(10,10,24,.72); border: 1px solid #ffd832; border-radius: 8px; padding: 8px 18px; max-width: 460px; }
+#missionTitle { font-size: 20px; font-weight: 800; color: #ffd832; letter-spacing: 1px; }
+#missionBrief { font-size: 14px; color: #e8e8f0; margin-top: 2px; }
+#missionTimer { font-size: 18px; font-weight: 800; color: #ff7a2a; }
+#radioPanel { position: absolute; bottom: 64px; left: 16px; background: rgba(10,10,24,.8); border: 1px solid #2affd8; border-radius: 6px; padding: 6px 12px; font-size: 15px; font-weight: 700; color: #2affd8; opacity: 0; transition: opacity .3s; }
+#radioPanel.show { opacity: 1; }
+#messages { position: absolute; bottom: 110px; left: 16px; max-width: 420px; }
+#messages .msg { background: rgba(10,10,24,.78); border-left: 3px solid #ff2a7a; padding: 6px 10px; margin-top: 6px; font-size: 14px; border-radius: 0 6px 6px 0; }
+#controls { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #c8c8d8; background: rgba(0,0,0,.45); padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+
+/* --- Screens --- */
+.screen { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(ellipse at 50% 30%, rgba(94,42,110,.88), rgba(10,8,20,.94)); }
+.screen h1 { font-size: 84px; line-height: .95; margin: 0; letter-spacing: 6px; color: #ff2a7a; text-shadow: 0 0 24px #ff2a7a, 0 0 60px #ff2a7a, 4px 4px 0 #2affd8; }
+.screen h2 { font-size: 64px; margin: 0; letter-spacing: 4px; color: #ffd832; text-shadow: 0 0 24px rgba(255,216,50,.7); }
+.screen h2.red { color: #ff2a4a; text-shadow: 0 0 24px rgba(255,42,74,.8); }
+.screen h2.gold { color: #ffd832; text-shadow: 0 0 30px #ffd832, 0 0 60px #ff7a2a; }
+.tagline { font-size: 17px; color: #e8e8f0; margin: 18px 0 26px; line-height: 1.5; }
+.buttons { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+button { pointer-events: auto; cursor: pointer; font-size: 18px; font-weight: 800; letter-spacing: 1px; color: #fff; background: linear-gradient(180deg, #ff2a7a, #c2185b); border: 2px solid #ff7aa8; border-radius: 8px; padding: 12px 26px; box-shadow: 0 4px 18px rgba(255,42,122,.5); }
+button:hover { filter: brightness(1.2); }
+button:disabled { opacity: .4; cursor: default; }
+.saveInfo { color: #b8b8c8; font-size: 14px; margin-top: 14px; }
+.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 26px; margin-top: 26px; font-size: 14px; color: #d8d8e8; text-align: left; }
+.howto b { color: #2affd8; }
+.fine { position: absolute; bottom: 14px; font-size: 12px; color: #8888a0; }
+#pauseStats, #bustedFine, #wastedLoss { font-size: 16px; color: #e8e8f0; }
